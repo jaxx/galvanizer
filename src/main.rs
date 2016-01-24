@@ -15,12 +15,17 @@ use nickel::{Nickel, HttpRouter};
 use config::reader as config_reader;
 use config::types::Config;
 
+use std::env;
+
 fn main() {
     env_logger::init().unwrap();
 
     debug!("main: Catalyst started.");
 
-    let configuration = read_configuration_file("");
+    let mut conf_file = env::current_dir().unwrap();
+    conf_file.push("application.conf");
+
+    let configuration = read_configuration_file(conf_file.as_path());
 
     let daemon = Daemon {
         name: "catalyst".into()
@@ -50,10 +55,11 @@ fn main() {
     debug!("main: Catalyst stopped.");
 }
 
-fn read_configuration_file(path: &str) -> Config {
-    let config = match config_reader::from_file(Path::new(path)) {
+fn read_configuration_file(path: &Path) -> Config {
+    let config = match config_reader::from_file(path) {
         Ok(c) => c,
-        Err(e) => panic!("Can't read configuration file from '{}'. Error: {}.", path, e.description()),
+        Err(e) => panic!("Can't read configuration file from '{}'. Error: {}.", path.display(), e.description()),
     };
+
     config
 }
