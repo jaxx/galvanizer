@@ -11,7 +11,7 @@ use std::sync::mpsc::Receiver;
 use std::path::Path;
 use std::error::Error;
 use daemon::{Daemon, DaemonRunner, State};
-use nickel::{Nickel, HttpRouter};
+use nickel::{Nickel, HttpRouter, StaticFilesHandler};
 use config::reader as config_reader;
 use config::types::Config;
 
@@ -45,6 +45,9 @@ fn main() {
                     debug!("main: Service -> start().");
 
                     let mut server = Nickel::new();
+
+                    server.utilize(StaticFilesHandler::new("assets"));
+                    server.utilize(StaticFilesHandler::new("assets/templates"));
 
                     server.get("**", middleware!("Hello world!"));
                     server.listen("127.0.0.1:3000");
