@@ -2,19 +2,25 @@
 extern crate log;
 extern crate env_logger;
 extern crate daemon;
-
 #[macro_use]
 extern crate nickel;
+extern crate config;
 
-use daemon::{Daemon, DaemonRunner, State};
+
 use std::sync::mpsc::Receiver;
-
+use std::path::Path;
+use std::error::Error;
+use daemon::{Daemon, DaemonRunner, State};
 use nickel::{Nickel, HttpRouter};
+use config::reader as config_reader;
+use config::types::Config;
 
 fn main() {
     env_logger::init().unwrap();
 
     debug!("main: Catalyst started.");
+
+    let configuration = read_configuration_file("");
 
     let daemon = Daemon {
         name: "catalyst".into()
@@ -42,4 +48,12 @@ fn main() {
     }).unwrap();
 
     debug!("main: Catalyst stopped.");
+}
+
+fn read_configuration_file(path: &str) -> Config {
+    let config = match config_reader::from_file(Path::new(path)) {
+        Ok(c) => c,
+        Err(e) => panic!("Can't read configuration file from '{}'. Error: {}.", path, e.description()),
+    };
+    config
 }
