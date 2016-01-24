@@ -20,7 +20,7 @@ use std::env;
 fn main() {
     env_logger::init().unwrap();
 
-    debug!("main: Catalyst started.");
+    debug!("main: Galvanizer started.");
 
     let mut conf_file = env::current_dir().unwrap();
     conf_file.push("application.conf");
@@ -37,7 +37,7 @@ fn main() {
     };
 
     daemon.run(move |rx: Receiver<State>| {
-        debug!("main: Catalyst service started.");
+        debug!("main: Galvanizer service started.");
 
         for signal in rx.iter() {
             match signal {
@@ -57,10 +57,10 @@ fn main() {
             }
         }
 
-        debug!("main: Catalyst service finished.");
+        debug!("main: Galvanizer service finished.");
     }).unwrap();
 
-    debug!("main: Catalyst stopped.");
+    debug!("main: Galvanizer stopped.");
 }
 
 fn read_configuration_file(path: &Path) -> Config {
