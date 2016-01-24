@@ -1,0 +1,10 @@
+[package]
+name = "galvanizer"
+version = "0.1.0"
+authors = ["Jakko Sikkar <jakko.sikkar@gmail.com>"]
+
+[dependencies]
+env_logger = "0.3.2"
+log = "0.3.5"
+daemon = "0.0.7"
+nickel = "0.7.3"
