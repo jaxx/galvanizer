@@ -27,8 +27,13 @@ fn main() {
 
     let configuration = read_configuration_file(conf_file.as_path());
 
+    let service_name = match configuration.lookup_str("application.service_name") {
+        Some(name) => name,
+        None => "galvanizer"
+    };
+
     let daemon = Daemon {
-        name: "catalyst".into()
+        name: service_name.into()
     };
 
     daemon.run(move |rx: Receiver<State>| {
