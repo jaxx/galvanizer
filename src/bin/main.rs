@@ -5,6 +5,7 @@ extern crate env_logger;
 extern crate nickel;
 extern crate config;
 extern crate mustache;
+extern crate galvanizer;
 
 
 use std::env;
