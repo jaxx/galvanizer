@@ -14,10 +14,12 @@ with installation:
 
 ## Installation
 
-1. Clone repository: ```git clone https://github.com/jaxx/galvanizer.git```
-2. ```cd galvanizer; cargo build --release```. The binary will now be in ```./target/release/galvanizer```
-4. Open node.js console and install project dependencies: ```npm install```
-5. Install third party javascript libraries: ```bower install```
-6. Use grunt tasks to compile stylesheets and javascript dependencies:
-    * Compile CSS files: ```grunt less```
-    * Compile javascript files: ```grunt concat; grunt uglify```
+1. Clone repository: `git clone https://github.com/jaxx/galvanizer.git`
+2. `cd galvanizer; cargo build --release`. The binary will now be in `./target/release/galvanizer`
+3. Open node.js console and install project dependencies: `npm install`
+4. Install third party javascript libraries: `bower install`
+5. Use grunt tasks to compile stylesheets and javascript dependencies:
+    * Compile CSS files: `grunt less`
+    * Compile javascript files: `grunt concat; grunt uglify`
+6. Start application: `cargo run`
+7. In your browser navigate to [http://localhost:3000](http://localhost:3000)

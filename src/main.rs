@@ -1,23 +1,20 @@
 #[macro_use]
 extern crate log;
 extern crate env_logger;
-extern crate daemon;
 #[macro_use]
 extern crate nickel;
 extern crate config;
 extern crate mustache;
 
-use std::collections::HashMap;
-use std::sync::mpsc::Receiver;
+
+use std::env;
 use std::path::Path;
 use std::error::Error;
-use daemon::{Daemon, DaemonRunner, State};
+use std::collections::HashMap;
 use nickel::{Nickel, HttpRouter, StaticFilesHandler, Request, Response, MiddlewareResult};
 use config::reader as config_reader;
 use config::types::Config;
 use mustache::Template;
-
-use std::env;
 
 fn render_to_string(template: &Template, data: &mut HashMap<&str, String>) -> String {
     let mut bytes = vec![];
@@ -48,35 +45,15 @@ fn main() {
         None => "galvanizer"
     };
 
-    let daemon = Daemon {
-        name: service_name.into()
-    };
+    let mut server = Nickel::new();
+    let mut router = Nickel::router();
 
-    daemon.run(move |rx: Receiver<State>| {
-        debug!("main: Galvanizer service started.");
+    router.get("/", show_index);
 
-        for signal in rx.iter() {
-            match signal {
-                State::Start => {
-                    debug!("main: Service -> start().");
+    server.utilize(router);
+    server.utilize(StaticFilesHandler::new("public/assets"));
 
-                    let mut server = Nickel::new();
-                    let mut router = Nickel::router();
-                    
-                    router.get("/", show_index);
-
-                    server.utilize(router);
-                    server.utilize(StaticFilesHandler::new("public/assets"));
-
-                    server.listen("127.0.0.1:3000");
-                },
-                State::Reload => debug!("main: Service -> restart()."),
-                State::Stop => debug!("main: Service -> stop().")
-            }
-        }
-
-        debug!("main: Galvanizer service finished.");
-    }).unwrap();
+    server.listen("127.0.0.1:3000");
 
     debug!("main: Galvanizer stopped.");
 }
