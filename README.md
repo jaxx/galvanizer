@@ -1,7 +1,7 @@
 # galvanizer
 Continuous integration server written in Rust
 
-## Install
+## Installation
 1. Clone repository: ```git clone https://github.com/jaxx/galvanizer.git```
 2. ```cd galvanizer; cargo build --release```. The binary will now be in ```./target/release/galvanizer```
 3. Install [node.js](https://nodejs.org/)
