@@ -8,4 +8,5 @@ Continuous integration server written in Rust
 4. Open node.js console and install components needed by galvanizer: grunt and bower
   * To install grunt use ```npm install -g grunt-cli```
   * To install bower use ```npm install -g bower```
-5. 
+5. Run ```bower install``` in galvanizer root directory from node.js console
+6. Start binary and open browser ```http://localhost:3000```
