@@ -3,19 +3,17 @@ extern crate log;
 extern crate env_logger;
 #[macro_use]
 extern crate nickel;
-extern crate config;
 extern crate mustache;
 extern crate galvanizer;
 
 
 use std::env;
 use std::path::Path;
-use std::error::Error;
 use std::collections::HashMap;
 use nickel::{Nickel, HttpRouter, StaticFilesHandler, Request, Response, MiddlewareResult};
-use config::reader as config_reader;
-use config::types::Config;
 use mustache::Template;
+
+use galvanizer::configuration::Configuration;
 
 fn render_to_string(template: &Template, data: &mut HashMap<&str, String>) -> String {
     let mut bytes = vec![];
@@ -39,12 +37,10 @@ fn main() {
     let mut conf_file = env::current_dir().unwrap();
     conf_file.push("application.conf");
 
-    let configuration = read_configuration_file(conf_file.as_path());
+    let configuration = Configuration::open(conf_file.as_path());
 
-    let service_name = match configuration.lookup_str("application.service_name") {
-        Some(name) => name,
-        None => "galvanizer"
-    };
+    let host = configuration.lookup_str_or("application.host", "localhost");
+    let port = configuration.lookup_integer32_or("application.port", 3000);
 
     let mut server = Nickel::new();
     let mut router = Nickel::router();
@@ -54,16 +50,7 @@ fn main() {
     server.utilize(router);
     server.utilize(StaticFilesHandler::new("public/assets"));
 
-    server.listen("127.0.0.1:3000");
+    server.listen(format!("{}:{}", host, port).as_str());
 
     debug!("main: Galvanizer stopped.");
-}
-
-fn read_configuration_file(path: &Path) -> Config {
-    let config = match config_reader::from_file(path) {
-        Ok(c) => c,
-        Err(e) => panic!("Can't read configuration file from '{}'. Error: {}.", path.display(), e.description()),
-    };
-
-    config
 }
