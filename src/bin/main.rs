@@ -48,7 +48,7 @@ fn main() {
     router.get("/", show_index);
 
     server.utilize(router);
-    server.utilize(StaticFilesHandler::new("public/assets"));
+    server.utilize(StaticFilesHandler::new("public"));
 
     server.listen(&format!("{}:{}", host, port)[..]);
 
