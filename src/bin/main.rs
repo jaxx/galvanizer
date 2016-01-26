@@ -50,7 +50,7 @@ fn main() {
     server.utilize(router);
     server.utilize(StaticFilesHandler::new("public/assets"));
 
-    server.listen(format!("{}:{}", host, port).as_str());
+    server.listen(&format!("{}:{}", host, port)[..]);
 
     debug!("main: Galvanizer stopped.");
 }
