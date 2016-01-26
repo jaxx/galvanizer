@@ -10,6 +10,8 @@ with installation:
 
 * [Rust programming language](http://rust-lang.org)
 * [Node.js and npm](https://nodejs.org)
+* [Bower package manager](http://bower.io/) (`npm install -g bower`)
+* [Gulp task runner](http://gulpjs.com) (`npm install -g gulp`)
 
 
 ## Installation
@@ -17,9 +19,6 @@ with installation:
 1. Clone repository: `git clone https://github.com/jaxx/galvanizer.git`
 2. `cd galvanizer; cargo build --release`. The binary will now be in `./target/release/galvanizer`
 3. Open node.js console and install project dependencies: `npm install`
-4. Install third party javascript libraries: `bower install`
-5. Use grunt tasks to compile stylesheets and javascript dependencies:
-    * Compile CSS files: `grunt less`
-    * Compile javascript files: `grunt concat; grunt uglify`
-6. Start application: `cargo run`
-7. In your browser navigate to [http://localhost:3000](http://localhost:3000)
+4. Use gulp default task to compile public assets for website: `gulp`
+5. Start application: `cargo run`
+6. In your browser navigate to [http://localhost:3000](http://localhost:3000)
